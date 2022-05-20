@@ -30,12 +30,12 @@ for j = 1:length(pf)
 
 
 endfor
-Pr_calc = real(3.*Vr.*conj(Ir));
-figure
-plot(pf, Vr)
+
+% Calculate Is
+Is = C*Vr + D*Ir;
+Ps = real(Vs.*conj(Is));
+eff = Pr./Ps;
 
 figure
-plot(pf, abs(Ir))
+plot(pf, eff)
 
-Vr(end)
-Ir(end)
