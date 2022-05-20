@@ -1,25 +1,41 @@
-A = 1+i;
-B = 3-i;
-C = 7;
-D = 9+2.5i;
-Vr_fl = 220;
-Pr_fl = 100e3;
-Ir_fl = (Pr_fl/(2.4*Vr_fl))*exp(i*acos(0.8));
-Vs = A*Vr_fl + B*Ir_fl;
-Pr = linspace(0, 100e3, 100);
+% Constants
+A = -5.25+12.5i;
+B = 5+2.5i;
+C = -31.25-10.625i;
+D = A;
+Pr = 100e3/3;
+
+% at UPF
+Vr_upf = 1000/3;
+Ir_upf = 100;
+
+% calculate Vs which is constant regardless of pf
+Vs = A*Vr_upf + B*Ir_upf;
+
+% Start general calculations
+pf = 0.3:0.001:1;
+Vr = zeros(1, length(pf));
+Ir = Vr;
+Vr1 = Vr;
+Vr2 = Vr;
+Ir1 = Vr;
+Ir2 = Vr;
+
+% Vs = A*Vr + B*Pr/(3*Vr*pf)*exp(i*acos(pf))
+% Vs*Vr = A*Vr^2 + B*Pr/(3*pf)*exp(i*acos(pf))
+for j = 1:length(pf)
+    x = B*((Pr/(pf(j)))*exp(i*acos(pf(j))));
+    Vr(j) = real(roots([A -Vs x])(1));
+    Ir(j) = (Pr/(Vr(j)*pf(j)))* exp(i*acos(pf(j)));
 
 
-Vr = zeros(1, length(Pr));
-for j = 1:1:length(Pr)
-    r = roots([A -Vs B*(Pr(j)*exp(i*acos(0.8)))/2.4]);
-    disp(r');
-    r_r = real(r);
-    r_i = abs(imag(r));
-    if r_r(1) > 0 && r_i(1) < r_i(2)
-        Vr(j) = r_r(1);
-    elseif r_r(2) > 0 && r_i(2) < r_i(1)
-        Vr(j) = r_r(2);
-    endif
 endfor
-%disp(Vr);
-%disp(roots([A -Vs B*(Pr(j)*exp(i*acos(0.8)))/2.4]))
+Pr_calc = real(3.*Vr.*conj(Ir));
+figure
+plot(pf, Vr)
+
+figure
+plot(pf, abs(Ir))
+
+Vr(end)
+Ir(end)
