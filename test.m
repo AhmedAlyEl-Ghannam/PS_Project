@@ -35,5 +35,7 @@ eff = Pr./Ps;
 % Test values
 figure
 plot(pf, eff)
+grid on
+title("Efficiency vs pf")
 
-%Ps(find(pf==0.8))
+
