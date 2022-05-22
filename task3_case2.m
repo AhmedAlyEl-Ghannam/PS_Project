@@ -3,15 +3,7 @@ function task3_case2(A, B, C, D)
     % Define constants
     Pr = 100e3/3;
     pf = 0.3:0.01:1;
-    
-    % Allocate space for variables
-    Ir_lag = zeros(1, length(pf));
-    Ir_lead = zeros(1, length(pf));
-    Vs_lag = zeros(1, length(pf));
-    Vs_lead = zeros(1, length(pf));
-    Is_lag = zeros(1, length(pf));
-    Is_lead = zeros(1, length(pf));
-    
+
     % Get Vr from user
     Vr = input('Enter Vr: ');
     
