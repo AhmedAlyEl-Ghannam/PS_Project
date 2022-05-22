@@ -1,47 +1,64 @@
 % Task 3 case 2
-function task3_case2(A, B, C, D, Vr_curr, Ir_curr)
-    Vs = A*Vr_curr + B*Ir_curr
-    %Vs = 20e3; % Constant
-    Pr = 100e3; % power recieved constant
-    pfr = 0.3:0.01:1; % power factor recieving
+function task3_case2(A, B, C, D)
+    % Define constants
+    Pr = 100e3/3;
+    pf = 0.3:0.01:1;
+    
+    % Allocate space for variables
+    Ir_lag = zeros(1, length(pf));
+    Ir_lead = zeros(1, length(pf));
+    Vs_lag = zeros(1, length(pf));
+    Vs_lead = zeros(1, length(pf));
+    Is_lag = zeros(1, length(pf));
+    Is_lead = zeros(1, length(pf));
+    
+    % Get Vr from user
+    Vr = input('Enter Vr: ');
+    
+    % Calculate Ir
+    Ir_lag = (Pr./(Vr.*pf)) .* exp(1i.*acos(pf));
+    Ir_lead = (Pr./(Vr.*pf)) .* exp(-1i.*acos(pf));
+    
+    % Calculate lag values
+    Vs_lag = A*Vr + B.*Ir_lag;
+    Is_lag = C*Vr + D.*Ir_lag;
+    Ss_lag = Vs_lag.*conj(Is_lag);
+    Ps_lag = real(Ss_lag);
+    eff_lag = Pr./Ps_lag; % efficiency for lag
+    Vrnl_lag = Vs_lag./A; % Vr at no load for lag
+    V_R_lag = (abs(Vrnl_lag) - Vr)./Vr; % Voltage regulation for lag
+    
+    % Calculate lead values
+    Vs_lead = A*Vr + B.*Ir_lead;
+    Is_lead = C*Vr + D.*Ir_lead;
+    Ss_lead = Vs_lead.*conj(Is_lead);
+    Ps_lead = real(Ss_lead);
+    eff_lead = Pr./Ps_lead;% efficiency for lead
+    Vrnl_lead = Vs_lead./A; % Vr at no load for lead
+    V_R_lead = (abs(Vrnl_lead) - Vr)./Vr; % Voltage regulation for lead
+    
+     % Plot graphs
+    figure
+    subplot(221)
+    plot(pf, eff_lag)
+    grid on
+    title("Efficiency vs pf for Lag")
 
-    % Pr = 3*Vr*|Ir|*pf => Ir = 100e3*exp(i*acos(pf)/(3*Vr*pf)  (1)
-    % Vs = A*Vr + B*Ir                                          (2)
-    % Substitute from 1 in 2 and rearrange
-    Vr = ones(1,length(pfr));
-    Ir = ones(1,length(pfr));
-    % Compute Vr and Ir
-    for j = 1:1:length(pfr)
-        x = B*(Pr/3*pfr(j))*exp(i*acos(pfr(j)));
-        r = roots([A -Vs x]);
-        r_r = real(r);
-        r_i = abs(imag(r));
-        % we need to get the root that is closest to being real because matlab accuracy is not 100%
-        if abs(r(1)) > abs(r(2))%r_i(1) < r_i(2) %r_r(1) > 0 &&
-            Vr(j) = real(r(1));
-        elseif abs(r(2)) > abs(r(1)) %r_i(2) < r_i(1) %r_r(2) > 0 &&
-            Vr(j) = real(r(2));
-        endif
-        Ir(j) = Pr*exp(i*acos(pfr(j)))/(3*Vr(j)*pfr(j));
-    endfor
+    subplot(222)
+    plot(pf, V_R_lag)
+    grid on
+    title("Voltage Regulation vs pf for Lag")
+    
+    
+    
+    subplot(223)
+    plot(pf, eff_lead)
+    grid on
+    title("Efficiency vs pf for Lead")
 
-    % Compute Is
-    Is = C.*Vr + D.*Ir;
-    % Compute Power sending
-    Ss = 3.*Vs.*conj(Is);
-    Ps = real(Ss);
-    % Compute efficiency
-    eff = Pr./Ps;
-    %Vr
-figure
-plot(pfr, Vr)
-title("pfr vs Vr")
-
-figure
-plot(pfr, 3.*abs(Vr).*abs(Ir).*pfr)
-title("pfr vs Pr")
-
-figure
-plot(pfr, eff)
-title("pfr vs efficiency")
-endfunction
+    subplot(224)
+    plot(pf, V_R_lead)
+    grid on
+    title("Voltage Regulation vs pf for Lead")
+    
+end
