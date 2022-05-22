@@ -14,8 +14,8 @@ D = A;
 Pr = 100e3/3;
 pf = 0.3:0.01:1;
 Ir = zeros(1, length(pf));
-Vs = Ir;
-Is = Ir;
+Vs = zeros(1, length(pf));
+Is = zeros(1, length(pf));
 
 % Get Vr from user
 Vr = 1000/3; %input("Enter Vr: ");
@@ -32,10 +32,21 @@ Ps = real(Ss);
 % Calculating Output
 eff = Pr./Ps;
 
+% VR =((vnl-vfl)/vfl)*100
+Vrnl=Vs./A;
+Vrfl = Vr;
+VR = (Vrnl - Vrfl)./Vrfl;
+
 % Test values
 figure
+subplot(121)
 plot(pf, eff)
 grid on
 title("Efficiency vs pf")
+
+subplot(122)
+plot(pf, VR)
+grid on
+title("Voltage Regulation vs pf")
 
 

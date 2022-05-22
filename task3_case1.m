@@ -34,7 +34,15 @@ function eff = task3_case1(A, B, C, D)
     Vs = A.*Vr + B.*Ir;
     Is = C.*Vr + D.*Ir;
     Ps = 3.*abs(Vs).*abs(Is).*cos(angle(Vs)-angle(Is));
+
     eff = Pr./Ps;
+
+
     figure
-    plot(Pr, eff)
+    subplot(121)
+    plot(Pr, eff); title('Efficeincy'); grid on;
+
+    subplot(122)
+    plot(Pr,VRegulation); title('Voltage Regulation'); grid on;
+
 endfunction
