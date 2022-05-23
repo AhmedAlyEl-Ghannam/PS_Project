@@ -3,7 +3,7 @@
 % Ahmed Sherif Ahmed Mahmoud Ghanim  19015255
 % Kerollos Saad Thomas Shokrallah    19016188
 % Yahia Walid Mohamed El-Dakhakhny   19016891
-% Yosry                                N/A
+% Ahmed Yosri Ahmed Arafa    17010296
 
 %% Prologue: Setup
 clear;
