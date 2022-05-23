@@ -3,7 +3,7 @@
 % Ahmed Sherif Ahmed Mahmoud Ghanim  19015255
 % Kerollos Saad Thomas Shokrallah    19016188
 % Yahia Walid Mohamed El-Dakhakhny   19016891
-% Ahmed Yosri Ahmed Arafa    17010296
+% Ahmed Yosri Ahmed Arafa            17010296
 
 %% Prologue: Setup
 clear;
@@ -92,6 +92,7 @@ C_per_m = (2 * pi * epsilon) / log(GMD / ConRadius);
 
 % Capacitance
 C_phase = C_per_m * ConLength_m;
+
 %%%%%%%% End of Transmission Line Parameters %%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
