@@ -119,8 +119,8 @@ Y = (j * omega  * C_phase);
 % Determining The Transmission Line Model Based on its Length
 if (ConLength <= 80)
     % Identifying Transmission Line Model Used as Short
-    state = 'Short';
-    fprintf('Based on the Line Length Entered, The Trasmission line is %s. \n',state);
+    state = 0;
+    disp('Based on the Line Length Entered, The Trasmission line is Short.');
     
     % Short Line Parameters are Used
     A = 1;
@@ -131,8 +131,8 @@ if (ConLength <= 80)
 elseif (ConLength <= 250)  
     
     % Identifying Transmission Line Model Used as Medium
-    state = 'Medium';
-    fprintf('Based on the Line Length Entered, The Trasmission line is %s. \n',state);
+    state = 81;
+    disp('Based on the Line Length Entered, The Trasmission line is Medium.');
         
     % Medium Line Parameters are Used Based on the Circuit Model
     model = line_model();
@@ -146,6 +146,8 @@ elseif (ConLength <= 250)
           B = Z;
           C = Y * (1 + (Y * Z / 4));
           D = 1 + ((Y * Z) / 2);
+          %Printing the Calculated Variables 
+          variables_disp(R_AC, C_phase, L_phase, XL, XC, Y, Z, A, B, C, D);
           break;
                 
       elseif (model == 1)
@@ -154,6 +156,8 @@ elseif (ConLength <= 250)
           B = Z * (1 + (Y * Z / 4));
           C = Y;
           D = 1 + (Y * Z / 2);
+          %Printing the Calculated Variables 
+          variables_disp(R_AC, C_phase, L_phase, XL, XC, Y, Z, A, B, C, D);
           break;
       else
           disp("Invalid Input! Try Again");
@@ -163,28 +167,31 @@ elseif (ConLength <= 250)
     end    
 
 else
-    state = 'Long';
-    fprintf('\nBased on the line length entered. The Trasmission line is %s. \n', state);
-    fprintf('This Program is not able to calculate Long Transmission Parameters.\nTerminated ..\n');
+    state = 251;
+    disp('\nBased on the line length entered. The Trasmission line is Long.');
+    disp('This Program is not able to calculate Long Transmission Parameters.\nTerminated ..');
+    A = 0;
+    B = 0;
+    C = 0;
+    D = 0;
     
 end
-
-%Printing the Calculated Variables 
-variables_disp(R_AC, C_phase, L_phase, XL, XC, Y, Z, A, B, C, D);
 
 %%%%%%%%%%%%%%%%% ABCD Parameters %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Task 3: Transmission Line Performance
 
-% Prologue : Prompting the User to Enter the Receiving-end Voltage
-Vr = input('Enter a Value for The Receiving-End Phase Voltage in v:  ');
+if (state ~= 251)
+    % Prologue : Prompting the User to Enter the Receiving-end Voltage
+    Vr = input('Enter a Value for The Receiving-End Phase Voltage in v:  ');
 
-% Case I
-task3_case1(A, B, C, D, Vr, j);
+    % Case I
+    task3_case1(A, B, C, D, Vr, j);
 
-% Case II
-task3_case2(A, B, C, D, Vr, j);
+    % Case II
+    task3_case2(A, B, C, D, Vr, j);
+end
 
 %%%%%%%%%%% Transmission Line Performance %%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -204,23 +211,23 @@ end
 %% Function that Prints the Calculated Transmission Line Data
 function variables_disp(R_AC, C_phase, L_phase, XL, XC, Y, Z, A, B, C, D)
     % Printing AC Resistance
-    fprintf('AC Resistance = %0.3f', R_AC);
+    fprintf('AC Resistance = %0.3f\n', R_AC);
     % Printing Phase Capacitance
-    fprintf('Capacitance = %0.3f', C_phase);
+    fprintf('Capacitance = %0.3f\n', C_phase);
     % Printing Phase Inductance
-    fprintf('Inductance = %0.3f', L_phase);
+    fprintf('Inductance = %0.3f\n', L_phase);
     % Printing Reactances
-    fprintf('Inductive Reactance = %0.3f + j%0.3f', real(XL), imag(XL));
-    fprintf('Capacitive Reactance = %0.3f + j%0.3f', real(XC), imag(XC));
+    fprintf('Inductive Reactance = %0.3f + j%0.3f\n', real(XL), imag(XL));
+    fprintf('Capacitive Reactance = %0.3f + j%0.3f\n', real(XC), imag(XC));
     % Printing Admittance
-    fprintf('Admittance = %0.3f + j%0.3f', real(Y), imag(Y));
+    fprintf('Admittance = %0.3f + j%0.3f\n', real(Y), imag(Y));
     % Printing Impedence
-    fprintf('Impedence = %0.3f + j%0.3f', real(Z), imag(Z));
+    fprintf('Impedence = %0.3f + j%0.3f\n', real(Z), imag(Z));
     % Printing ABCD
-    fprintf('A = %0.3f + j%0.3f', real(A), imag(A));
-    fprintf('B = %0.3f + j%0.3f', real(B), imag(B));
-    fprintf('C = %0.3f + j%0.3f', real(C), imag(C));
-    fprintf('D = %0.3f + j%0.3f', real(D), imag(D)); 
+    fprintf('A = %0.3f + j%0.3f\n', real(A), imag(A));
+    fprintf('B = %0.3f + j%0.3f\n', real(B), imag(B));
+    fprintf('C = %0.3f + j%0.3f\n', real(C), imag(C));
+    fprintf('D = %0.3f + j%0.3f\n', real(D), imag(D)); 
 end
 
 %% Function Used to Plot the Graphs Required in Task 3 Case I
