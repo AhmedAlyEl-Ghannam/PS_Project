@@ -80,7 +80,7 @@ GMR = ConRadius * exp(-0.25);
 L_per_m = (meu / (2 * pi)) * log(GMD / GMR);
 
 % Inductance
-L = L_per_m * ConLength_m;
+L_phase = L_per_m * ConLength_m;
 
 %% Calculating Capacitance
 
@@ -91,7 +91,7 @@ epsilon = 8.85e-12;
 C_per_m = (2 * pi * epsilon) / log(GMD / ConRadius);
 
 % Capacitance
-C = C_per_m * ConLength_m;
+C_phase = C_per_m * ConLength_m;
 %%%%%%%% End of Transmission Line Parameters %%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -105,22 +105,22 @@ f = 50;
 omega = 2 * pi * f;
 
 % Calculating Inductive Reactance
-XL = (j * omega * L);
+XL = (j * omega * L_phase);
 
 % Calculating Capacitive Reactance
-XC = 1 / (j * omega * C);
+XC = 1 / (j * omega * C_phase);
 
 % Calculating Impedence
 Z = R_AC + XL;
 
 % Calculating Admittance
-Y = (j * omega  * C);
+Y = (j * omega  * C_phase);
 
 % Determining The Transmission Line Model Based on its Length
 if (ConLength <= 80)
     % Identifying Transmission Line Model Used as Short
     state = 'Short';
-    fprintf('Based on the line length entered. The Trasmission line is %s. \n',state);
+    fprintf('Based on the Line Length Entered, The Trasmission line is %s. \n',state);
     
     % Short Line Parameters are Used
     A = 1;
@@ -132,7 +132,7 @@ elseif (ConLength <= 250)
     
     % Identifying Transmission Line Model Used as Medium
     state = 'Medium';
-    fprintf('Based on the line length entered. The Trasmission line is %s. \n',state);
+    fprintf('Based on the Line Length Entered, The Trasmission line is %s. \n',state);
         
     % Medium Line Parameters are Used Based on the Circuit Model
     model = line_model();
@@ -169,6 +169,9 @@ else
     
 end
 
+%Printing the Calculated Variables 
+variables_disp(R_AC, C_phase, L_phase, XL, XC, Y, Z, A, B, C, D);
+
 %%%%%%%%%%%%%%%%% ABCD Parameters %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -188,16 +191,39 @@ task3_case2(A, B, C, D, Vr, j);
 
 %% Functions Used. Put at The End of Program
 
-% Function that Reads Spacing Between Conductors
+%% Function that Reads Spacing Between Conductors
 function spac = read_spacing()
     spac = input("Enter 0 for Symmetric Spacing and 1 for Unsymmetric Spacing:  "); 
 end
 
-%Function that Reads the User's Choice between T and π Models
+%%Function that Reads the User's Choice between T and π Models
 function mod = line_model()
     mod = input("Enter 1 for π Model and 0 for T Model:  "); 
 end
 
+%% Function that Prints the Calculated Transmission Line Data
+function variables_disp(R_AC, C_phase, L_phase, XL, XC, Y, Z, A, B, C, D)
+    % Printing AC Resistance
+    fprintf('AC Resistance = %0.3f', R_AC);
+    % Printing Phase Capacitance
+    fprintf('Capacitance = %0.3f', C_phase);
+    % Printing Phase Inductance
+    fprintf('Inductance = %0.3f', L_phase);
+    % Printing Reactances
+    fprintf('Inductive Reactance = %0.3f + j%0.3f', real(XL), imag(XL));
+    fprintf('Capacitive Reactance = %0.3f + j%0.3f', real(XC), imag(XC));
+    % Printing Admittance
+    fprintf('Admittance = %0.3f + j%0.3f', real(Y), imag(Y));
+    % Printing Impedence
+    fprintf('Impedence = %0.3f + j%0.3f', real(Z), imag(Z));
+    % Printing ABCD
+    fprintf('A = %0.3f + j%0.3f', real(A), imag(A));
+    fprintf('B = %0.3f + j%0.3f', real(B), imag(B));
+    fprintf('C = %0.3f + j%0.3f', real(C), imag(C));
+    fprintf('D = %0.3f + j%0.3f', real(D), imag(D)); 
+end
+
+%% Function Used to Plot the Graphs Required in Task 3 Case I
 function task3_case1(A, B, C, D, Vr, j)
     %% Initialize Power Factor (Constant, Given)
     pf = 0.8;
@@ -244,7 +270,7 @@ function task3_case1(A, B, C, D, Vr, j)
     
 end
 
-% Function Used to Plot the Graphs Required in Task 3 Case II
+%% Function Used to Plot the Graphs Required in Task 3 Case II
 function task3_case2(A, B, C, D, Vr, j)
     %% Defining Active Power @ Receiving End
     Pr = 100e3/3;
