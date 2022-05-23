@@ -14,7 +14,7 @@ fprintf('Welcome to the Transmission Line Wizard >> \n\n');
 
 %% A) Reading Values from the User
 % Storing Resistivity
-ConResistivity = input("Please Enter a Value for the Conductor's Resistivity in ohm/m:  ");
+ConResistivity = input("Please Enter a Value for the Conductor's Resistivity in ohm.m:  ");
 
 % Storing Length
 ConLength = input("Please Enter a Value for the Conductor's Length in km:  ");
