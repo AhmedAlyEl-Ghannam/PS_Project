@@ -35,13 +35,13 @@ spacing = read_spacing();
 while (1)
     
     % Symmetric
-    if (spacing == 0)
+    if (spacing == 1)
        % Calculating GMD
        GMD = input("Enter a Value for the Distance Between Conductors in m:  "); 
        break;
     
-    % Unsymmetric
-    elseif (spacing == 1)
+    % Asymmetric
+    elseif (spacing == 2)
         D_12 = input("Enter a Value for the Distance Between Conductors One and Two in m:  ");
         D_23 = input("Enter a Value for the Distance Between Conductors Two and Three in m:  ");
         D_13 = input("Enter a Value for the Distance Between Conductors One and Three in m:  ");
@@ -50,7 +50,7 @@ while (1)
         break;
     % Idiotproofing Spacing
     else
-        disp("Invalid Input! Try Again");
+        fprintf('Invalid Input! \nChoose either 1 or 2 ONLY.\n');
         spacing = read_spacing();
     end
     
@@ -119,8 +119,8 @@ Y = (j * omega  * C_phase);
 % Determining The Transmission Line Model Based on its Length
 if (ConLength <= 80)
     % Identifying Transmission Line Model Used as Short
-    state = 'Short';
-    fprintf('Based on the Line Length Entered, The Trasmission line is %s. \n',state);
+    state = 0;
+    fprintf('\nBased on the Line Length Entered, The Trasmission line is Short.');
     
     % Short Line Parameters are Used
     A = 1;
@@ -131,8 +131,8 @@ if (ConLength <= 80)
 elseif (ConLength <= 250)  
     
     % Identifying Transmission Line Model Used as Medium
-    state = 'Medium';
-    fprintf('Based on the Line Length Entered, The Trasmission line is %s. \n',state);
+    state = 81;
+    fprintf('\nBased on the Line Length Entered, The Trasmission line is Medium.');
         
     % Medium Line Parameters are Used Based on the Circuit Model
     model = line_model();
@@ -140,20 +140,24 @@ elseif (ConLength <= 250)
     % Idiotproofing Model
     while (1)
     
-      if (model == 0)
+      if (model == 1)
           % Medium Line Parameters for PI Model
           A = 1 + (Y * Z / 2);
           B = Z;
           C = Y * (1 + (Y * Z / 4));
           D = 1 + ((Y * Z) / 2);
+          %Printing the Calculated Variables 
+          variables_disp(R_AC, C_phase, L_phase, XL, XC, Y, Z, A, B, C, D);
           break;
                 
-      elseif (model == 1)
+      elseif (model == 2)
           % Medium Line Parameters for T Model
           A = 1 + (Y * Z / 2);
           B = Z * (1 + (Y * Z / 4));
           C = Y;
           D = 1 + (Y * Z / 2);
+          %Printing the Calculated Variables 
+          variables_disp(R_AC, C_phase, L_phase, XL, XC, Y, Z, A, B, C, D);
           break;
       else
           disp("Invalid Input! Try Again");
@@ -163,9 +167,13 @@ elseif (ConLength <= 250)
     end    
 
 else
-    state = 'Long';
-    fprintf('\nBased on the line length entered. The Trasmission line is %s. \n', state);
-    fprintf('This Program is not able to calculate Long Transmission Parameters.\nTerminated ..\n');
+    state = 251;
+    disp('\nBased on the line length entered. The Trasmission line is Long.');
+    disp('This Program is not able to calculate Long Transmission Parameters.\nTerminated ..');
+    A = 0;
+    B = 0;
+    C = 0;
+    D = 0;
     
 end
 
@@ -174,49 +182,80 @@ end
 
 %% Task 3: Transmission Line Performance
 
-% Prologue : Prompting the User to Enter the Receiving-end Voltage
-Vr = input('Enter a Value for The Receiving-End Phase Voltage in v:  ');
-
-% Case I
-task3_case1(A, B, C, D, Vr, j);
-
-% Case II
-task3_case2(A, B, C, D, Vr, j);
+if (state ~= 251)
+    % Prologue : Prompting the User to Enter the Receiving-end Voltage
+    Vr = input('Enter a Value for The Receiving-End Phase Voltage in v:  ');
+    % Choosing Which case to Output Based on the User's Choice
+    decider = case_decider();
+    while (1)
+        if (decider == 1)
+            % Case I
+            task3_case1(A, B, C, D, Vr, j);
+            break;
+                
+        elseif (decider == 2)
+            % Case II
+            task3_case2(A, B, C, D, Vr, j);
+            break;
+        else
+            fprintf('Invalid Input! \nChoose either 1 or 2 ONLY.\n');
+            decider = case_decider();
+        end
+    end
+    fprintf('Thank You for Using our Program\n');
+    fprintf('Feel Free to Leave a Tip for the Developer\n');
+    fprintf('A D I O S\n');
+end
 
 %%%%%%%%%%% Transmission Line Performance %%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Functions Used. Put at The End of Program
 
-% Function that Reads Spacing Between Conductors
+%% Function that Reads Spacing Between Conductors
 function spac = read_spacing()
-    spac = input("Enter 0 for Symmetric Spacing and 1 for Unsymmetric Spacing:  "); 
+    fprintf('\nPlease Choose the Type of the Conductor Spacing >>\n  1)Symmetrical \n  2)Asymmetric \n\n');
+    spac = input('Your Choice: '); 
+    fprintf('\n');
 end
 
-%Function that Reads the User's Choice between T and π Models
+%%Function that Reads the User's Choice between PI and T Models
 function mod = line_model()
-    mod = input("Enter 1 for π Model and 0 for T Model:  "); 
+    fprintf('Please Select the Model Type >>\n  1)PI \n  2)T \n\n');
+    mod = input('Your Choice: ');
+    
 end
 
-% Function that Prints the Calculated Transmission Line Data
-function variables_disp(R_AC, C_phase, L, XL, XC, Y, Z, spacing, model, A, B, C, D)
+%% Function that Prints the Calculated Transmission Line Data
+function variables_disp(R_AC, C_phase, L_phase, XL, XC, Y, Z, A, B, C, D)
     % Printing AC Resistance
-    fprintf('AC Resistance = %0.3f', R_AC);
+    fprintf('AC Phase Resistance = %0.3f\n', R_AC);
     % Printing Phase Capacitance
-    fprintf('Capacitance = %0.3f', C_phase);
-    fprintf('Inductance = %0.3f', L_phase);
-    fprintf('Inductive = %0.3f + j%0.3f', real(XL), imag(XL));
-    fprintf('XC = %0.3f + j%0.3f', real(XC), imag(XC));
-    fprintf('Y = %0.3f + j%0.3f', real(Y), imag(Y));
-    fprintf('Z = %0.3f + j%0.3f', real(Z), imag(Z));
-    fprintf('', spacing);
-    fprintf('', model);
-    fprintf('A = %0.3f + j%0.3f', real(A), imag(A));
-    fprintf('B = %0.3f + j%0.3f', real(B), imag(B));
-    fprintf('C = %0.3f + j%0.3f', real(C), imag(C));
-    fprintf('D = %0.3f + j%0.3f', real(D), imag(D)); 
+    fprintf('Phase Capacitance = %0.3f\n', C_phase);
+    % Printing Phase Inductance
+    fprintf('Phase Inductance = %0.3f\n', L_phase);
+    % Printing Reactances
+    fprintf('Phase Inductive Reactance = %0.3f + j%0.3f\n', real(XL), imag(XL));
+    fprintf('Phase Capacitive Reactance = %0.3f + j%0.3f\n', real(XC), imag(XC));
+    % Printing Admittance
+    fprintf('Phase Admittance = %0.3f + j%0.3f\n', real(Y), imag(Y));
+    % Printing Impedence
+    fprintf('Phase Impedence = %0.3f + j%0.3f\n', real(Z), imag(Z));
+    % Printing ABCD
+    fprintf('ABCD Parameters: \n');
+    fprintf('A = %0.3f + j%0.3f\n', real(A), imag(A));
+    fprintf('B = %0.3f + j%0.3f\n', real(B), imag(B));
+    fprintf('C = %0.3f + j%0.3f\n', real(C), imag(C));
+    fprintf('D = %0.3f + j%0.3f\n', real(D), imag(D)); 
 end
 
+%%Function that Reads the User's Choice between Case I and Case II
+function choice = case_decider()
+    fprintf('Please Select the Desired Case Output  >>\n  1)Case I \n  2)Case II \n\n');
+    choice = input('Your Choice: ');
+end
+
+%% Function Used to Plot the Graphs Required in Task 3 Case I
 function task3_case1(A, B, C, D, Vr, j)
     %% Initialize Power Factor (Constant, Given)
     pf = 0.8;
@@ -263,7 +302,7 @@ function task3_case1(A, B, C, D, Vr, j)
     
 end
 
-% Function Used to Plot the Graphs Required in Task 3 Case II
+%% Function Used to Plot the Graphs Required in Task 3 Case II
 function task3_case2(A, B, C, D, Vr, j)
     %% Defining Active Power @ Receiving End
     Pr = 100e3/3;
