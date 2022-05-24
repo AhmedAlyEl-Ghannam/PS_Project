@@ -267,7 +267,7 @@ function task3_case1(A, B, C, D, Vr, j)
     Pr = Pr.*1000/3;
    
     %% Calculating the Value of Receiving-end Current
-    Ir = (Pr ./ ( Vr * pf)) * exp(j * acos(pf));
+    Ir = (Pr ./ ( Vr * pf)) * exp(-j * acos(pf));
     
     %% Calculating Sending-end Values
     Vs = (A * Vr) + (B .* Ir);
@@ -351,25 +351,25 @@ function task3_case2(A, B, C, D, Vr, j)
     % Plotting Efficiency vs Power Factor 
     figure
     subplot(221)
-    plot(pf, eff_lag)
+    plot(pf, eff_lag*100)
     grid on
-    title("Efficiency vs Lagging PF")
+    title("Efficiency (%) vs Lagging PF")
 
     % Plotting Voltage Regulation vs Power Factor
     subplot(222)
-    plot(pf, V_R_lag)
+    plot(pf, V_R_lag*100)
     grid on
-    title("Voltage Regulation vs Lagging")
+    title("Voltage Regulation (%) vs Lagging PF")
     
     %% Graphs @ Leading Power Factor
     % Plotting Efficiency vs Power Factor
     subplot(223)
-    plot(pf, eff_lead)
+    plot(pf, eff_lead*100)
     grid on
-    title("Efficiency vs Leading PF")
+    title("Efficiency (%) vs Leading PF")
     % Plotting Voltage Regulation vs Power Factor
     subplot(224)
-    plot(pf, V_R_lead)
+    plot(pf, V_R_lead*100)
     grid on
     title("Voltage Regulation vs Leading PF")
     

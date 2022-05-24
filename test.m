@@ -1,9 +1,9 @@
 clear all
 
 % Constants
-A = -5.25+12.5i;
-B = 5+2.5i;
-C = -31.25-10.625i;
+A = 1;
+B = 1+7i;
+C = 0;
 D = A;
 
 %A=0.9706+0.00269i;
@@ -18,7 +18,7 @@ Vs = zeros(1, length(pf));
 Is = zeros(1, length(pf));
 
 % Get Vr from user
-Vr = 1000/3; %input("Enter Vr: ");
+Vr = 200; %input("Enter Vr: ");
 
 % Calculate Ir
 Ir = (Pr./(Vr.*pf)) .* exp(i.*acos(pf));

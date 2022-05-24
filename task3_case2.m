@@ -4,7 +4,7 @@ function task3_case2(A, B, C, D)
     j = 1i;
     
     %% Defining Active Power @ Receiving End
-    Pr = 100e3/3;
+    Pr = 304800000/3;
     
     %% Defining Power Factor Ranging between 0.3 and 1
     pf = 0.3:0.01:1;
@@ -13,8 +13,8 @@ function task3_case2(A, B, C, D)
     Vr = input('Enter a Value for The Receiving-End Phase Voltage in v:  ');
     
     %% Calculating the Value of Receiving-end Current
-    Ir_lag = (Pr ./ (Vr .* pf)) .* exp(j .* acos(pf));
-    Ir_lead = (Pr ./ (Vr .* pf)) .* exp(-j .* acos(pf));
+    Ir_lag = (Pr ./ (Vr .* pf)) .* exp(-j .* acos(pf));
+    Ir_lead = (Pr ./ (Vr .* pf)) .* exp(j .* acos(pf));
     
     %% Calculations @ Lagging Power Factor
     % Calculating Sending-End Values
