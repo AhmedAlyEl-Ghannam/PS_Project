@@ -170,7 +170,7 @@ elseif (ConLength <= 250)
 else
     state = 251;
     fprintf('\nBased on the Line Length Entered\n The Transmission line is Long.\n');
-    fprintf('This Program is not Designed to Calculate Long Transmission Line Parameters.\nTerminated ..');
+    fprintf('This Program is not Designed to Calculate Long Transmission Line Parameters.\nTerminated ..\n\n');
     
 end
 
@@ -224,13 +224,13 @@ end
 
 %% Function that Prints the Calculated Transmission Line Data
 function variables_disp(R_AC, C_phase, L_phase, XL, XC, Y, Z, A, B, C, D)
-    fprintf('Transmission Line Parameters: \n');
+    fprintf('Transmission Line Parameters of the Whole Line: \n');
     % Printing AC Resistance
     fprintf('\tAC Phase Resistance = %0.3f ohm\n', R_AC);
     % Printing Phase Capacitance
-    fprintf('\tPhase Capacitance = %0.3f F\n', C_phase);
+    fprintf('\tPhase Capacitance = %0.3f uF\n', C_phase*10^6);
     % Printing Phase Inductance
-    fprintf('\tPhase Inductance = %0.3f H\n', L_phase);
+    fprintf('\tPhase Inductance = %0.3f mH\n', L_phase*1000);
     % Printing Reactances
     fprintf('\tPhase Inductive Reactance = %0.3f + j%0.3f ohm\n', real(XL), imag(XL));
     fprintf('\tPhase Capacitive Reactance = %0.3f + j%0.3f ohm\n', real(XC), imag(XC));
@@ -377,6 +377,7 @@ end
 
 %% Function that Displays the End Message
 function goodbye_message()
+    pause(1);
     fprintf('\n\n');
     fprintf('Thank You for Using our Program\n');
     fprintf('Feel Free to Leave a Tip for the Developers\n');
