@@ -4,7 +4,7 @@ function task3_case2(A, B, C, D)
     j = 1i;
     
     %% Defining Active Power @ Receiving End
-    Pr = 304800000/3;
+    Pr = 100e3/3;
     
     %% Defining Power Factor Ranging between 0.3 and 1
     pf = 0.3:0.01:1;
@@ -65,12 +65,12 @@ function task3_case2(A, B, C, D)
     %% Graphs @ Leading Power Factor
     % Plotting Efficiency vs Power Factor
     subplot(223)
-    plot(pf, eff_lead)
+    plot(pf, eff_lead*100)
     grid on
     title("Efficiency vs Leading PF")
     % Plotting Voltage Regulation vs Power Factor
     subplot(224)
-    plot(pf, V_R_lead)
+    plot(pf, V_R_lead*100)
     grid on
     title("Voltage Regulation vs Leading PF")
     

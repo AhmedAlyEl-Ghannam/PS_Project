@@ -17,6 +17,7 @@ function task3_case1(A, B, C, D)
     %% Calculating the Value of Receiving-end Current
     Ir = (Pr ./ ( Vr * pf)) * exp(-j * acos(pf));
     
+    
     %% Calculating Sending-end Values
     Vs = (A * Vr) + (B .* Ir);
     Is = (C * Vr) + (D .* Ir);
@@ -40,14 +41,12 @@ function task3_case1(A, B, C, D)
     figure
     subplot(121)
     plot(Pr, eff.*100); 
-    eff(end)
     grid on
     title('Efficiency (%) vs Active Power (kW)')
     
     % Plotting Voltage Regulation (%) vs Active Power
     subplot(122)
     plot(Pr, V_R.*100); 
-    V_R(end)
     grid on
     title('Plotting Voltage Regulation (%) vs Active Power')
     
