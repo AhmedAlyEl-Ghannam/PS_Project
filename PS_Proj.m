@@ -128,7 +128,7 @@ if (ConLength <= 80)
     B = Z;
     C = 0;
     D = 1; 
-    
+    variables_disp(R_AC, 0, L_phase, XL, 0,0 , Z, A, B, C, D)
 elseif (ConLength <= 250)  
     
     % Identifying Transmission Line Model Used as Medium
@@ -232,6 +232,7 @@ function variables_disp(R_AC, C_phase, L_phase, XL, XC, Y, Z, A, B, C, D)
     % Printing Phase Inductance
     fprintf('\tPhase Inductance = %0.3f mH\n', L_phase*1000);
     % Printing Reactances
+    % TODO: reactance is pure imaginary remove real part
     fprintf('\tPhase Inductive Reactance = %0.3f + j%0.3f ohm\n', real(XL), imag(XL));
     fprintf('\tPhase Capacitive Reactance = %0.3f + j%0.3f ohm\n', real(XC), imag(XC));
     % Printing Admittance
