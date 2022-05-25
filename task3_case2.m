@@ -1,17 +1,11 @@
 % Task 3 case 2
-function task3_case2(A, B, C, D)
-    % Defining sqrt(-1) as j
-    j = 1i;
-    
+function task3_case2(A, B, C, D, Vr, j)
     %% Defining Active Power @ Receiving End
     Pr = 100e3/3;
     
     %% Defining Power Factor Ranging between 0.3 and 1
     pf = 0.3:0.01:1;
 
-    %% Prompting the User to Enter the Receiving-end Voltage
-    Vr = input('Enter a Value for The Receiving-End Phase Voltage in v:  ');
-    
     %% Calculating the Value of Receiving-end Current
     Ir_lag = (Pr ./ (Vr .* pf)) .* exp(-j .* acos(pf));
     Ir_lead = (Pr ./ (Vr .* pf)) .* exp(j .* acos(pf));
@@ -52,13 +46,13 @@ function task3_case2(A, B, C, D)
     % Plotting Efficiency vs Power Factor 
     figure
     subplot(221)
-    plot(pf, eff_lag)
+    plot(pf, eff_lag*100)
     grid on
     title("Efficiency vs Lagging PF")
 
     % Plotting Voltage Regulation vs Power Factor
     subplot(222)
-    plot(pf, V_R_lag)
+    plot(pf, V_R_lag*100)
     grid on
     title("Voltage Regulation vs Lagging")
     

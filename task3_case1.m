@@ -1,8 +1,5 @@
 % Task 3 Case 1
-function task3_case1(A, B, C, D)
-    % Defining sqrt(-1) as j
-    j = 1i;
-
+function task3_case1(A, B, C, D, Vr, j)
     %% Initialize Power Factor (Constant, Given)
     pf = 0.8;
     
@@ -10,9 +7,6 @@ function task3_case1(A, B, C, D)
     Pr = 0:0.5:100;
     % Measuring Active Power in W and Dividing by 3 to get Power per Phase
     Pr = Pr.*1000/3;
-   
-    %% Prompting the User to Enter the Receiving-end Voltage
-    Vr = input('Enter a Value for The Receiving-End Phase Voltage in v:  ');
     
     %% Calculating the Value of Receiving-end Current
     Ir = (Pr ./ ( Vr * pf)) * exp(-j * acos(pf));
