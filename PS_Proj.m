@@ -166,12 +166,10 @@ elseif (ConLength <= 250)
       end
             
     end    
-
 else
     state = 251;
     fprintf('\nBased on the Line Length Entered\n The Transmission line is Long.\n');
     fprintf('This Program is not Designed to Calculate Long Transmission Line Parameters.\nTerminated ..\n\n');
-    
 end
 
 %%%%%%%%%%%%%%%%% ABCD Parameters %%%%%%%%%%%%%%%%%%%
